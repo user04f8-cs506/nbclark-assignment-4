@@ -219,18 +219,29 @@ function App() {
                     {results.map((result, idx) => (
                       <li
                         key={idx}
-                        className={`mb-6 transform transition-all duration-300 ${
-                          idx === activeDoc ? 'scale-105 bg-purple-600 bg-opacity-30' : 'bg-purple-600 bg-opacity-20'
+                        className={`mb-6 transform transition-all duration-500 ease-in-out ${
+                          idx === activeDoc ? 'scale-105 bg-opacity-40' : 'bg-opacity-20'
                         }`}
                         onMouseEnter={() => setActiveDoc(idx)}
                         onMouseLeave={() => setActiveDoc(null)}
                       >
-                        <div className="bg-white bg-opacity-20 p-4 rounded-lg shadow-lg hover:bg-opacity-30 transition-all duration-300 ease-in-out">
+                        <div
+                          className={`bg-white bg-opacity-20 p-4 rounded-lg shadow-lg hover:bg-opacity-30 transition-all duration-500 ease-in-out overflow-hidden ${
+                            idx === activeDoc ? 'max-h-96' : 'max-h-32'
+                          }`}
+                          style={{
+                            transition: 'all 0.5s ease-in-out',
+                          }}
+                        >
                           <p className="text-white text-lg font-semibold">
                             Document {result.index}: Similarity {result.similarity.toFixed(4)}
                           </p>
-                          <p className="text-gray-200 mt-2">
-                            {idx === activeDoc ? result.document.text : `${result.document.text.substring(0, 200)}...`}
+                          <p
+                            className={`text-gray-200 mt-2 transition-opacity duration-500 ${
+                              idx === activeDoc ? 'opacity-100' : 'opacity-50'
+                            }`}
+                          >
+                            {result.document.text}
                           </p>
                         </div>
                       </li>
