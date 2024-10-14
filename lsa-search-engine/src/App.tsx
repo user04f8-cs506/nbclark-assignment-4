@@ -43,6 +43,7 @@ const NUM_CHUNKS = 189;
 
 function App() {
   const [query, setQuery] = useState('');
+  const [activeDoc, setActiveDoc] = useState<number | null>(null);
   const [results, setResults] = useState<SearchResult[]>([]);
   const [chartData, setChartData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -216,13 +217,20 @@ function App() {
                   <h2 className="text-3xl font-semibold text-white mb-6">Results</h2>
                   <ul>
                     {results.map((result, idx) => (
-                      <li key={idx} className="mb-6">
-                        <div className="bg-white bg-opacity-20 p-4 rounded-lg shadow-lg transition duration-300 hover:bg-opacity-30">
+                      <li
+                        key={idx}
+                        className={`mb-6 transform transition-all duration-300 ${
+                          idx === activeDoc ? 'scale-105 bg-purple-600 bg-opacity-30' : 'bg-purple-600 bg-opacity-20'
+                        }`}
+                        onMouseEnter={() => setActiveDoc(idx)}
+                        onMouseLeave={() => setActiveDoc(null)}
+                      >
+                        <div className="bg-white bg-opacity-20 p-4 rounded-lg shadow-lg hover:bg-opacity-30 transition-all duration-300 ease-in-out">
                           <p className="text-white text-lg font-semibold">
                             Document {result.index}: Similarity {result.similarity.toFixed(4)}
                           </p>
                           <p className="text-gray-200 mt-2">
-                            {result.document.text.substring(0, 200)}...
+                            {idx === activeDoc ? result.document.text : `${result.document.text.substring(0, 200)}...`}
                           </p>
                         </div>
                       </li>
@@ -230,24 +238,24 @@ function App() {
                   </ul>
                   <div className="mt-8">
                     <Bar
-                      key={JSON.stringify(chartData)} // This ensures a new chart is created when data changes
+                      key={JSON.stringify(chartData)} // Ensure re-render with new data
                       data={chartData}
                       options={{
                         responsive: true,
                         scales: {
                           x: {
                             ticks: { color: 'white' },
-                            grid: { display: false }
+                            grid: { display: false },
                           },
                           y: {
                             ticks: { color: 'white' },
-                            grid: { color: 'rgba(255,255,255,0.1)' }
-                          }
+                            grid: { color: 'rgba(255,255,255,0.1)' },
+                          },
                         },
                         animation: {
                           duration: 1000,
-                          easing: 'easeInOutQuad'
-                        }
+                          easing: 'easeInOutQuad',
+                        },
                       }}
                     />
                   </div>
