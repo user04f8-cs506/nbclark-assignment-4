@@ -200,6 +200,11 @@ function App() {
                 placeholder="Type your query here..."
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    handleSearch();
+                  }
+                }}
               />
               
               <button
