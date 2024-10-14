@@ -8,7 +8,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -20,11 +19,23 @@ jobs:
       with:
         node-version: '16'
 
-    - name: Install dependencies
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.12'
+
+    - name: Install Python dependencies
+      run: |
+        python3 -m pip install --upgrade pip
+        python3 -m pip install -r requirements.txt
+
+    - name: Install Node.js dependencies and fetch dataset
       run: make install
 
     - name: Run server
       run: make run &
+      env:
+        PORT: 3000
 
     - name: Wait for server to start
       run: sleep 10
